@@ -2,6 +2,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 int determine_number_of_vowels(char *input)
 {
     char *p = input;
@@ -24,12 +26,13 @@ int main()
     int MAX_SIZE = 256;
     char input[MAX_SIZE];
     int processed;
+    mkfifo("./mario", 0666);
+    mkfifo("./luigi", 0666);
     while (1)
     {
         int fd;
         fd = open("./mario", O_RDONLY);
         read(fd, input, MAX_SIZE);
-        printf("input: %s\n", input);
         close(fd);
         processed = determine_number_of_vowels(input);
         fd = open("./luigi", O_WRONLY);
